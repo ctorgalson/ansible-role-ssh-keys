@@ -1,5 +1,26 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    # Convenience vars.
+    test_user: molecule
+    test_user_dir: "/home/{{ test_user }}"
+    test_user_ssh_dir: "{{ test_user_dir }}/.ssh"
+    test_user_private_key: "id_rsa"
+    test_user_public_key: "id_rsa.pub"
+    test_key_dir: "files/keys"
+
+    # Role vars.
+    ssh_ssh_keys:
+      - src: "{{ test_key_dir }}/{{ test_user_private_key }}"
+        dest: "{{ test_user_ssh_dir }}/{{ test_user_private_key }}"
+        owner: "{{ test_user }}"
+        group: "{{ test_user }}"
+        mode: "0600"
+      - src: "{{ test_key_dir }}/{{ test_user_public_key }}"
+        dest: "{{ test_user_ssh_dir }}/{{ test_user_public_key }}"
+        owner: "{{ test_user }}"
+        group: "{{ test_user }}"
+        mode: "0644"
   roles:
     - role: ansible-role-ssh-keys
