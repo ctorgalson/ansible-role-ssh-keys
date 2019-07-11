@@ -1,8 +1,22 @@
 ---
 # tasks file for ansible-role-ssh-keys
 
-- name: Copy keys from controller to remote host.
-  include_tasks: "ssh-keys.yml"
-  loop: "{{ ssh_ssh_keys }}"
-  loop_control:
-    loop_var: ssh_key
+- name: Set up .ssh directory and copy keys.
+  block:
+    - name: Create users .ssh directory on remote host.
+      file:
+        path: "{{ ssh_ssh_dir }}"
+        owner: "{{ ssh_ssh_dir_owner }}"
+        group: "{{ ssh_ssh_dir_group }}"
+        # Set a safe default mode.
+        mode: "{{ ssh_ssh_dir_mode | default('0700') }}"
+        state: directory
+      when:
+        - "ssh_ssh_dir is defined"
+        - "ssh_ssh_dir != ''"
+
+    - name: Copy keys from controller to remote host.
+      include_tasks: "ssh-keys.yml"
+      loop: "{{ ssh_ssh_keys }}"
+      loop_control:
+        loop_var: ssh_key
