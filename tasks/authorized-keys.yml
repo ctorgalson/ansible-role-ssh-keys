@@ -1,0 +1,11 @@
+---
+# authorized key-copying tasks for ansible-role-ssh-keys.
+
+- name: Copy public keys into authorized_keys file.
+  lineinfile:
+    path: "{{ ssh_ssh_dir }}/authorized_keys"
+    line: "{{ lookup('file', public_key) }}"
+    create: true
+    owner: "{{ ssh_ssh_dir_owner }}"
+    group: "{{ ssh_ssh_dir_group }}"
+    mode: "{{ ssh_authorized_keys_mode | default('0600') }}"

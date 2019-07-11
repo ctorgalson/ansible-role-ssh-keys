@@ -20,3 +20,9 @@
       loop: "{{ ssh_ssh_keys }}"
       loop_control:
         loop_var: ssh_key
+
+- name: Copy public keys from controller to authorized_keys file.
+  include_tasks: "authorized-keys.yml"
+  loop: "{{ ssh_authorized_keys }}"
+  loop_control:
+    loop_var: public_key
