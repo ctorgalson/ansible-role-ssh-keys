@@ -16,5 +16,7 @@
     ssh_ssh_keys:
       - src: "{{ test_user_private_key }}"
       - src: "{{ test_user_public_key }}"
+    ssh_authorized_keys:
+      - "{{ test_user_public_key }}"
   roles:
     - role: ansible-role-ssh-keys

@@ -8,25 +8,18 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('all')
 
 
-def test_ssh_dir(host):
-    f = host.file('/home/molecule/.ssh')
-
-    assert f.exists
-    assert f.is_directory
-    assert f.user == 'molecule'
-    assert f.group == 'molecule'
-    assert f.mode == 0o700
-
-
-@pytest.mark.parametrize('user,group,key,mode', [
+@pytest.mark.parametrize('user,group,file,mode', [
+    ('molecule', 'molecule', '', 0o700),
     ('molecule', 'molecule', 'id_rsa', 0o600),
     ('molecule', 'molecule', 'id_rsa.pub', 0o644),
+    ('molecule', 'molecule', 'authorized_keys', 0o600),
 ])
-def test_ssh_key(host, user, group, key, mode):
-    f = host.file('/home/{}/.ssh/{}'.format(user, key))
+def test_file_properties(host, user, group, file, mode):
+    f = host.file('/home/{}/.ssh/{}'.format(user, file))
+    t = 'is_file' if file else 'is_directory'
 
     assert f.exists
-    assert f.is_file
+    assert getattr(f, t)
     assert f.user == user
     assert f.group == user
     assert f.mode == mode
