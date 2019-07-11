@@ -57,9 +57,7 @@ None.
 
     - hosts: servers
       vars:
-        ssh_ssh_dir: "home/username/.ssh"
-        ssh_ssh_dir_owner: "username"
-        ssh_ssh_dir_group: "username"
+        ssh_user: "username"
         ssh_ssh_keys:
           - src: "files/keys/id_rsa"
           - src: "files/keys/id_rsa.pub"
