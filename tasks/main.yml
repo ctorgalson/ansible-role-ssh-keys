@@ -1,2 +1,8 @@
 ---
 # tasks file for ansible-role-ssh-keys
+
+- name: Copy keys from controller to remote host.
+  include_tasks: "ssh-keys.yml"
+  loop: "{{ ssh_ssh_keys }}"
+  loop_control:
+    loop_var: ssh_key

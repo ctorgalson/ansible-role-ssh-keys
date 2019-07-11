@@ -1,0 +1,18 @@
+---
+# key-copying tasks for ansible-role-ssh-keys.
+
+- name: Ensure parent directory exists for key {{ ssh_key.dest | basename }}.
+  file:
+    path: "{{ ssh_key.dest | dirname }}"
+    owner: "{{ ssh_key.dir_owner | default(ssh_key.owner) }}"
+    group: "{{ ssh_key.dir_group | default(ssh_key.group) }}"
+    mode: "{{ ssh_key.dir_mode | default('0700') }}"
+    state: directory
+
+- name: Copy key {{ ssh_key.dest | basename }}  into place.
+  copy:
+    src: "{{ ssh_key.src }}"
+    dest: "{{ ssh_key.dest }}"
+    owner: "{{ ssh_key.owner }}"
+    group: "{{ ssh_key.group }}"
+    mode: "{{ ssh_key.mode | default(600) }}"

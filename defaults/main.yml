@@ -1,2 +1,12 @@
 ---
 # defaults file for ansible-role-ssh-keys
+
+ssh_ssh_keys: []
+# - src
+#   dest
+#   owner
+#   group
+#   mode
+#   dir_owner
+#   dir_group
+#   dir_mode
