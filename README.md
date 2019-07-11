@@ -1,48 +1,68 @@
-Role Name
-=========
+# Ansible Role SSH Keys
 
-A brief description of the role goes here.
+This role allows management of SSH and authorized keys independently of users.
 
-Requirements
-------------
+## Requirements
 
-Any pre-requisites that may not be covered by Ansible itself or the role should
-be mentioned here. For instance, if the role uses the EC2 module, it may be a
-good idea to mention in this section that the boto package is required.
+No special requirements.
 
-Role Variables
---------------
+## Role Variables
 
-A description of the settable variables for this role should go here, including
-any variables that are in defaults/main.yml, vars/main.yml, and any variables
-that can/should be set via parameters to the role. Any variables that are read
-from other roles and/or the global scope (ie. hostvars, group vars, etc.) should
-be mentioned here as well.
+| Variable name              | Default value                       | Description |
+|----------------------------|-------------------------------------|-------------|
+| `ssh_user`                 | `undefined`                         | Name of ssh key owner. |
+| `ssh_user_home`            | `/home/{{ ssh_user }}`              | Derived path to owner's home directory. |
+| `ssh_ssh_dir`              | `{{ ssh_user_home }}/.ssh`          | Derived path to owner's .ssh directory. |
+| `ssh_ssh_dir_owner`        | `{{ ssh_user }}`                    | Owner of .ssh directory. |
+| `ssh_ssh_dir_group`        | `{{ ssh_user }}`                    | Group of .ssh directory. |
+| `ssh_ssh_dir_mode`         | `0700`                              | Default permissions for .ssh directory. |
+| `ssh_ssh_keys`             | `[]`                                | List of ssh keys. |
+| `ssh_authorized_keys_file` | `{{ ssh_ssh_dir }}/authorized_keys` | Derived path to owner's authorized_keys file. |
+| `ssh_authorized_keys_mode` | `0600`                              | Default permissions for authorized_keys file. |
+| `ssh_authorized_keys`      | `[]`                                | List of paths to public keys to be added to authorized_keys file. |
 
-Dependencies
-------------
+### `ssh_ssh_keys` Structure
 
-A list of other roles hosted on Galaxy should go here, plus any details in
-regards to parameters that may need to be set for other roles, or variables that
-are used from other roles.
+The `ssh_ssh_keys` var is a list of the properties of the keys. The
+`src` property is mandatory, but the `mode` property can be omitted:
 
-Example Playbook
-----------------
+    ssh_ssh_keys:
+      - src: path/to/private_key
+        mode: 0600
+      - src: path/to/public_key.pub
+        mode: 0644
 
-Including an example of how to use your role (for instance, with variables
-passed in as parameters) is always nice for users too:
+### `ssh_authorized_keys` Structure
+
+The `ssh_authorized_keys` var is a simple list of paths:
+
+    ssh_authorized_keys:
+      - path/to/public_key_1.pub
+      - path/to/public_key_2.pub
+
+## Dependencies
+
+None.
+
+## Example Playbook
 
     - hosts: servers
-      roles:
-         - { role: ansible-role-ssh-keys, x: 42 }
+      vars:
+        ssh_ssh_dir: "home/username/.ssh"
+        ssh_ssh_dir_owner: "username"
+        ssh_ssh_dir_group: "username"
+        ssh_ssh_keys:
+          - src: "files/keys/id_rsa"
+          - src: "files/keys/id_rsa.pub"
+        ssh_authorized_keys:
+          - "files/authorized_keys/keyname.pub"
+      role:
+         - ansible-role-ssh-keys
 
-License
--------
+## License
 
-BSD
+GPLv3
 
-Author Information
-------------------
+## Author Information
 
-An optional section for the role authors to include contact information, or a
-website (HTML is not allowed).
+Christopher Torgalson
