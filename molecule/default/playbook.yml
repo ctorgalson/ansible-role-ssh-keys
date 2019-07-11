@@ -5,22 +5,16 @@
     # Convenience vars.
     test_user: molecule
     test_user_dir: "/home/{{ test_user }}"
-    test_user_ssh_dir: "{{ test_user_dir }}/.ssh"
-    test_user_private_key: "id_rsa"
-    test_user_public_key: "id_rsa.pub"
     test_key_dir: "files/keys"
+    test_user_private_key: "{{ test_key_dir }}/id_rsa"
+    test_user_public_key: "{{ test_key_dir }}/id_rsa.pub"
 
     # Role vars.
+    ssh_ssh_dir: "{{ test_user_dir }}/.ssh"
+    ssh_ssh_dir_owner: "{{ test_user }}"
+    ssh_ssh_dir_group: "{{ test_user }}"
     ssh_ssh_keys:
-      - src: "{{ test_key_dir }}/{{ test_user_private_key }}"
-        dest: "{{ test_user_ssh_dir }}/{{ test_user_private_key }}"
-        owner: "{{ test_user }}"
-        group: "{{ test_user }}"
-        mode: "0600"
-      - src: "{{ test_key_dir }}/{{ test_user_public_key }}"
-        dest: "{{ test_user_ssh_dir }}/{{ test_user_public_key }}"
-        owner: "{{ test_user }}"
-        group: "{{ test_user }}"
-        mode: "0644"
+      - src: "{{ test_user_private_key }}"
+      - src: "{{ test_user_public_key }}"
   roles:
     - role: ansible-role-ssh-keys
