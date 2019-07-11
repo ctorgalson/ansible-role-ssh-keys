@@ -2,7 +2,7 @@
 # defaults file for ansible-role-ssh-keys
 
 # ssh_user: "example"
-# ssh_user_home: "/home/{{ ssh_user }}"
+ssh_user_home: "/home/{{ ssh_user }}"
 
 ssh_ssh_dir: "{{ ssh_user_home }}/.ssh"
 ssh_ssh_dir_owner: "{{ ssh_user }}"
