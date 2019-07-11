@@ -2,17 +2,18 @@
 # defaults file for ansible-role-ssh-keys
 
 # ssh_user_home: "/home/example"
+
 # ssh_ssh_dir: "{{ ssh_user_home }}/.ssh"
 # ssh_ssh_dir_owner: "example"
 # ssh_ssh_dir_group: "example"
-# ssh_ssh_dir_mode: "0700"
-
-# ssh_ssh_keys:
+ssh_ssh_dir_mode: "0700"
+ssh_ssh_keys: []
 #   - src: "files/keys/id_rsa"
 #     mode: "0600"
 #   - src: "files/keys/id_rsa.pub"
 #     mode: "0600"
 
 # ssh_authorized_keys_file: "{{ ssh_ssh_dir }}/authorized_keys"
-# ssh_authorized_keys: []
-#   - src: "files/authorized-keys/id_rsa.pub"
+ssh_authorized_keys_mode: "0600"
+ssh_authorized_keys: []
+#   - "files/authorized-keys/id_rsa.pub"
