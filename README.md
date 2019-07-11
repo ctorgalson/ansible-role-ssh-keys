@@ -1,5 +1,7 @@
 # Ansible Role SSH Keys
 
+[![Build Status](https://travis-ci.com/ctorgalson/ansible-role-ssh-keys.svg?branch=master)](https://travis-ci.com/ctorgalson/ansible-role-ssh-keys)
+
 This role allows management of SSH and authorized keys independently of users.
 
 ## Requirements
@@ -39,6 +41,13 @@ The `ssh_authorized_keys` var is a simple list of paths:
     ssh_authorized_keys:
       - path/to/public_key_1.pub
       - path/to/public_key_2.pub
+
+### Linux vs macOS
+
+- On linux systems, only one variable besides `ssh_ssh_keys` and/or
+  `ssh_authorized_keys`_must_ be set: `ssh_user`.
+- On macOS hosts, two variables besides `ssh_ssh_keys` and/or
+  `ssh_authorized_keys` _must_ be set: `ssh_user` and `ssh_user_home`.
 
 ## Dependencies
 
