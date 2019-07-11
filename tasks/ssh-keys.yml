@@ -5,11 +5,6 @@
   set_fact:
     ssh_key_filename: "{{ ssh_key.src | basename }}"
 
-- name: Try to determine if this is a public or private key.
-  set_fact:
-    # Consider any key that does NOT have a '.pub' extenion to be private.
-    ssh_key_type: "{{ ((ssh_key.src | basename | splitext)[1] == '.pub') | ternary('public', 'private') }}"
-
 - name: Copy key {{ ssh_key_filename }}  into place.
   copy:
     src: "{{ ssh_key.src }}"
@@ -17,4 +12,5 @@
     owner: "{{ ssh_ssh_dir_owner }}"
     group: "{{ ssh_ssh_dir_group }}"
     # Set a safe default mode in case the user has not set one.
-    mode: "{{ ssh_key.mode | default((ssh_key_type == 'public') | ternary('0644', '0600')) }}"
+    mode: "{{ ssh_key.mode | default(((ssh_key_filename | splitext)[1] == '.pub') | ternary('0644', '0600')) }}"
+  no_log: true
