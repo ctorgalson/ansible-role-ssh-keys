@@ -1,6 +1,6 @@
 # Ansible Role SSH Keys
 
-[![Build Status](https://travis-ci.com/ctorgalson/ansible-role-ssh-keys.svg?branch=master)](https://travis-ci.com/ctorgalson/ansible-role-ssh-keys)
+![](https://github.com/ctorgalson/ansible-role-oh-my-zsh/workflows/Molecule%20Test/badge.svg)
 
 This role allows management of SSH and authorized keys independently of users.
 

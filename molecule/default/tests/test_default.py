@@ -23,3 +23,14 @@ def test_file_properties(host, user, group, file, mode):
     assert f.user == user
     assert f.group == user
     assert f.mode == mode
+
+
+@pytest.mark.parametrize('user,file,content', [
+    ('molecule', 'authorized_keys',
+        'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDYe69V0bcF22P+'),
+    ('molecule', 'id_rsa', '-----BEGIN RSA PRIVATE KEY-----'),
+])
+def test_file_contents(host, user, file, content):
+    f = host.file('/home/{}/.ssh/{}'.format(user, file))
+
+    assert content in f.content_string
